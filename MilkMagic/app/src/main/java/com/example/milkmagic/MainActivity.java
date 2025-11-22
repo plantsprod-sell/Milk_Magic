@@ -1,5 +1,6 @@
 package com.example.milkmagic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Opening Vendor Map...", Toast.LENGTH_SHORT).show();
                     // Intent intent = new Intent(MainActivity.this, VendorActivity.class);
                     // startActivity(intent);
+                    startActivity(new Intent(getApplicationContext(), VendorActivity.class));
+                    overridePendingTransition(0,0);
                     return true;
                 } else if (id == R.id.nav_profile) {
                     // Logic to open Profile Activity
