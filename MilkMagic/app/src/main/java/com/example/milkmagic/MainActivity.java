@@ -3,6 +3,7 @@ package com.example.milkmagic;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Set Status Bar to White and Icons to Dark
+        //getWindow().setStatusBarColor(getResources().getColor(R.color.light_bg));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

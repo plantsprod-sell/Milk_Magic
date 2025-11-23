@@ -1,0 +1,41 @@
+[
+  {
+    "vendorName": "Amul",
+    "price": "₹60/L",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1546445317-29f4545e9d53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  {
+    "vendorName": "Mother Dairy",
+    "price": "₹58/L",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1500595046743-cd271d694d30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1596733430282-d8713028222f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  {
+    "vendorName": "Gopal Dairy",
+    "price": "₹65/L",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1528498033381-a9b73d521c2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1559563362-c667ba5f5480?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  {
+    "vendorName": "Nandini Milk",
+    "price": "₹52/L",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1629193708301-209667796911?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  {
+    "vendorName": "Heritage Fresh",
+    "price": "₹62/L",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1596450524472-747d253f932e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1546445317-29f4545e9d53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  }
+]

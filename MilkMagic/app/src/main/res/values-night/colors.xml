@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_background">#05101A</color>
+    <color name="text_header">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="search_bg">#112233</color>
+    <color name="search_stroke">#2C3E50</color>
+    <color name="btn_bg">#0F3D3E</color>
+    <color name="btn_text">#4DD0E1</color>
+    <color name="price_text">#4DD0E1</color>
+
+    <color name="glass_bottom">#E6081B25</color>
+    <color name="glass_center">#99081B25</color>
+    <color name="glass_top">#00081B25</color>
+    <color name="vendor_name_text">#FFFFFF</color>
+</resources>
