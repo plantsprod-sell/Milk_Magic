@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 Liters"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tv_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Whole Milk"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/tv_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daily Subscription • Next Delivery: Tomorrow"
+        android:textSize="12sp"
+        android:textColor="#E0E0E0"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
