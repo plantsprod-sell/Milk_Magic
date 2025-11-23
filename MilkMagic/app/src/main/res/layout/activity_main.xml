@@ -137,6 +137,7 @@
                 android:weightSum="3"
                 app:layout_constraintTop_toBottomOf="@id/tv_quick_title">
 
+                <!-- MILK CARD -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="130dp"
@@ -164,71 +165,76 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:gravity="center"
-                            android:text="Add \nMilk"
+                            android:text="Milk"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp" />
 
-                        <!-- Add-to-Cart Counter -->
+                        <!-- ADD BUTTON -->
                         <LinearLayout
-                            android:id="@+id/layout_counter"
+                            android:id="@+id/layout_add_milk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_add_button">
+
+                            <TextView
+                                android:id="@+id/btn_add_milk"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
+                        <!-- COUNTER -->
+                        <LinearLayout
+                            android:id="@+id/layout_counter_milk"
                             android:layout_width="wrap_content"
                             android:layout_height="36dp"
                             android:orientation="horizontal"
                             android:gravity="center"
                             android:background="@drawable/bg_counter_rounded"
                             android:padding="4dp"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="10dp"
+                            android:visibility="gone">
 
-                            <!-- Minus Button -->
                             <ImageButton
-                                android:id="@+id/btn_minus"
+                                android:id="@+id/btn_minus_milk"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:adjustViewBounds="true"
                                 android:background="@android:color/transparent"
-                                android:contentDescription="Decrease"
-                                android:scaleType="centerInside"
                                 android:src="@drawable/ic_leftarrow"
                                 android:tint="@color/text_primary" />
 
-                            <!-- Count Text -->
                             <TextView
-                                android:id="@+id/tv_count"
+                                android:id="@+id/tv_count_milk"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:gravity="center"
                                 android:text="0"
                                 android:textSize="16sp"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/black"
-                                android:focusable="false"
-                                android:cursorVisible="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textColor="@color/black" />
 
-                            <!-- Plus Button -->
                             <ImageButton
-                                android:id="@+id/btn_plus"
+                                android:id="@+id/btn_plus_milk"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:background="@android:color/transparent"
                                 android:src="@drawable/ic_plus"
-                                android:contentDescription="Increase"
-                                android:scaleType="centerInside"
-                                android:adjustViewBounds="true"
                                 android:tint="@color/text_primary" />
-
                         </LinearLayout>
 
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
 
+                <!-- CURD CARD -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="130dp"
                     android:layout_weight="1"
-                    android:layout_marginHorizontal="4dp"
-                    app:cardBackgroundColor="@color/bg_light_green"
+                    android:layout_marginEnd="8dp"
+                    app:cardBackgroundColor="@color/bg_light_blue"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp">
 
@@ -240,22 +246,80 @@
                         android:padding="10dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_milk"
-                            app:tint="@color/icon_green" />
+                            android:layout_width="22dp"
+                            android:layout_height="33dp"
+                            android:src="@drawable/milk_bottle_svgrepo_com_1"
+                            app:tint="@color/icon_blue" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:gravity="center"
-                            android:text="Add 500ml\nCurd"
+                            android:text="Curd"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp" />
+
+                        <!-- ADD BUTTON -->
+                        <LinearLayout
+                            android:id="@+id/layout_add_curd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_add_button">
+
+                            <TextView
+                                android:id="@+id/btn_add_curd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
+                        <!-- COUNTER -->
+                        <LinearLayout
+                            android:id="@+id/layout_counter_curd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_counter_rounded"
+                            android:padding="4dp"
+                            android:layout_marginTop="10dp"
+                            android:visibility="gone">
+
+                            <ImageButton
+                                android:id="@+id/btn_minus_curd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_leftarrow"
+                                android:tint="@color/text_primary" />
+
+                            <TextView
+                                android:id="@+id/tv_count_curd"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
+
+                            <ImageButton
+                                android:id="@+id/btn_plus_curd"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_plus"
+                                android:tint="@color/text_primary" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- CUSTOM ORDER CARD -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="130dp"
@@ -286,6 +350,63 @@
                             android:text="Custom\nOrder"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp" />
+
+                        <!-- ADD BUTTON -->
+                        <LinearLayout
+                            android:id="@+id/layout_add_custom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:padding="6dp"
+                            android:background="@drawable/bg_add_button">
+
+                            <TextView
+                                android:id="@+id/btn_add_custom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
+                        <!-- COUNTER -->
+                        <LinearLayout
+                            android:id="@+id/layout_counter_custom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_counter_rounded"
+                            android:padding="4dp"
+                            android:layout_marginTop="10dp"
+                            android:visibility="gone">
+
+                            <ImageButton
+                                android:id="@+id/btn_minus_custom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_leftarrow"
+                                android:tint="@color/text_primary" />
+
+                            <TextView
+                                android:id="@+id/tv_count_custom"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
+
+                            <ImageButton
+                                android:id="@+id/btn_plus_custom"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_plus"
+                                android:tint="@color/text_primary" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

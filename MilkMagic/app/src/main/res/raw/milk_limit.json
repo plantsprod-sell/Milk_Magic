@@ -1,3 +1,5 @@
 {
-  "max_quantity": 5
+  "milk": 5,
+  "curd": 10,
+  "custom": 2
 }
