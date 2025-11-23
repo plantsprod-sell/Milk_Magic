@@ -59,6 +59,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_app_name" />
 
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_search_rounded"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="12dp"
+                android:hint="Search Vendors"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="#ffffff"
+                app:layout_constraintBottom_toBottomOf="@id/top_header_bg"
+                app:layout_constraintTop_toBottomOf="@id/top_header_bg" />
+
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_current_order"
                 android:layout_width="match_parent"
@@ -69,68 +85,34 @@
                 app:cardElevation="8dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_app_name">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/bg_gradient_card"
-                    android:padding="24dp">
+                    android:orientation="vertical"
+                    android:padding="18dp">
 
-                    <TextView
-                        android:id="@+id/tv_card_header"
-                        android:layout_width="wrap_content"
+                    <!-- Page content slider -->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewpager_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:orientation="horizontal" />
+
+                    <!-- Dots Indicator -->
+                    <LinearLayout
+                        android:id="@+id/dots_container"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Current Order"
-                        android:textColor="#E0E0E0"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
 
-                    <TextView
-                        android:id="@+id/tv_qty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="2 Liters"
-                        android:textColor="@color/white"
-                        android:textSize="36sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_card_header" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_product"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Whole Milk"
-                        android:textColor="@color/white"
-                        android:textSize="22sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_qty" />
-
-                    <TextView
-                        android:id="@+id/tv_subtext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Daily Subscription • Next Delivery: Tomorrow"
-                        android:textColor="#F0F0F0"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_product" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="View/Modify"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_subtext"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/tv_quick_title"
@@ -172,9 +154,9 @@
                         android:padding="10dp">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_milk"
+                            android:layout_width="22dp"
+                            android:layout_height="33dp"
+                            android:src="@drawable/milk_bottle_svgrepo_com_1"
                             app:tint="@color/icon_blue" />
 
                         <TextView
@@ -182,10 +164,63 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:gravity="center"
-                            android:text="Add 1L\nWhole Milk"
+                            android:text="Add \nMilk"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp" />
+
+                        <!-- Add-to-Cart Counter -->
+                        <LinearLayout
+                            android:id="@+id/layout_counter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_counter_rounded"
+                            android:padding="4dp"
+                            android:layout_marginTop="10dp">
+
+                            <!-- Minus Button -->
+                            <ImageButton
+                                android:id="@+id/btn_minus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:adjustViewBounds="true"
+                                android:background="@android:color/transparent"
+                                android:contentDescription="Decrease"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_leftarrow"
+                                android:tint="@color/text_primary" />
+
+                            <!-- Count Text -->
+                            <TextView
+                                android:id="@+id/tv_count"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textSize="16sp"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/black"
+                                android:focusable="false"
+                                android:cursorVisible="false"
+                                android:focusableInTouchMode="false"/>
+
+                            <!-- Plus Button -->
+                            <ImageButton
+                                android:id="@+id/btn_plus"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_plus"
+                                android:contentDescription="Increase"
+                                android:scaleType="centerInside"
+                                android:adjustViewBounds="true"
+                                android:tint="@color/text_primary" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
