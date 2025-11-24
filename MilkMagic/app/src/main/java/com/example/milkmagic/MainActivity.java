@@ -1,32 +1,44 @@
 package com.example.milkmagic;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.io.InputStream;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+
+    // MILK ANIMATION VARS
+    private LottieAnimationView lottieMilk; // Renamed for clarity
+    private LottieAnimationView lottieCurd;
+    private int milkQuantity = 0;
+    private int curdQuantity = 0;
 
     // --------------------------
     // JSON Reader
@@ -38,25 +50,23 @@ public class MainActivity extends AppCompatActivity {
             int c;
             while ((c = is.read()) != -1) buffer.write(c);
             is.close();
-
             return new JSONObject(buffer.toString());
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    // --------------------------
+    // Dots Logic
+    // --------------------------
     public void addDots(int count, LinearLayout layout) {
         layout.removeAllViews();
         for (int i = 0; i < count; i++) {
             ImageView dot = new ImageView(this);
             dot.setImageResource(R.drawable.dot_inactive);
-
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(20, 20);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(20, 20);
             params.setMargins(8, 0, 8, 0);
-
             layout.addView(dot, params);
         }
     }
@@ -73,33 +83,234 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Read limit JSON
-        JSONObject limits = getJsonLimits();
-        int maxMilk   = limits.optInt("milk", 5);
-        int maxCurd   = limits.optInt("curd", 10);
-        int maxCustom = limits.optInt("custom", 2);
+        // 1. Initialize Global Views
+        lottieMilk = findViewById(R.id.lottie_milk); // Make sure XML ID is lottie_milk
+        lottieCurd = findViewById(R.id.lottie_curd); // Make sure XML ID is lottie_curd
 
-        // Bottom Navigation
+        lottieMilk.setProgress(0f);
+        lottieCurd.setProgress(0f);
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.nav_home) return true;
-                else if (id == R.id.nav_map) {
-                    startActivity(new Intent(getApplicationContext(), VendorActivity.class));
-                    overridePendingTransition(0,0);
-                    return true;
-                } else if (id == R.id.nav_profile) {
-                    return true;
-                }
-                return false;
+
+        // 2. Read Limits
+        JSONObject limits = getJsonLimits();
+        int maxMilk   = (limits != null) ? limits.optInt("milk", 10) : 10;
+        int maxCurd   = (limits != null) ? limits.optInt("curd", 10) : 10;
+        int maxCustom = (limits != null) ? limits.optInt("custom", 5) : 5;
+
+        // 3. Setup Bottom Nav
+        setupBottomNav();
+
+        // 4. Setup ViewPager Slider
+        setupSlider();
+
+        // 5. SETUP CARDS
+        setupMilkQuickCard(maxMilk);
+        setupCurdQuickCard(maxCurd);
+        setupCustomQuickCard(maxCustom);
+    }
+
+    // -----------------------------------------
+    // GENERIC ANIMATION LOGIC (FIXED)
+    // -----------------------------------------
+    // I replaced 'lottieBottle' with 'targetView' everywhere inside this method
+    private void animateProduct(LottieAnimationView targetView, float start, float end, boolean isAdding) {
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        // CASE 1: ALREADY FULL (Just Shake)
+        if (start == 1f && end == 1f && isAdding) {
+
+            // Use targetView, not lottieMilk!
+            ObjectAnimator rotate = ObjectAnimator.ofFloat(targetView, "rotation", 0f, -10f, 10f, -5f, 5f, 0f);
+            rotate.setDuration(500);
+            rotate.setInterpolator(new BounceInterpolator());
+
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(targetView, "scaleX", 1f, 1.1f, 1f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(targetView, "scaleY", 1f, 1.1f, 1f);
+            scaleX.setDuration(300);
+            scaleY.setDuration(300);
+
+            animatorSet.playTogether(rotate, scaleX, scaleY);
+        }
+        // CASE 2: FILLING OR EMPTYING
+        else {
+            ValueAnimator liquidAnimator = ValueAnimator.ofFloat(start, end);
+            liquidAnimator.setDuration(800);
+            liquidAnimator.setInterpolator(new DecelerateInterpolator());
+            liquidAnimator.addUpdateListener(animation -> {
+                // Use targetView!
+                targetView.setProgress((float) animation.getAnimatedValue());
+            });
+
+            if (end > start) {
+                // Use targetView!
+                ObjectAnimator rotate = ObjectAnimator.ofFloat(targetView, "rotation", 0f, -10f, 10f, -5f, 5f, 0f);
+                rotate.setDuration(800);
+                rotate.setInterpolator(new BounceInterpolator());
+
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(targetView, "scaleX", 1f, 1.1f, 1f);
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(targetView, "scaleY", 1f, 1.1f, 1f);
+
+                animatorSet.playTogether(liquidAnimator, rotate, scaleX, scaleY);
+            } else {
+                animatorSet.playTogether(liquidAnimator);
+            }
+        }
+
+        animatorSet.start();
+    }
+
+    // -----------------------------------------
+    // MILK CARD LOGIC
+    // -----------------------------------------
+    private void setupMilkQuickCard(int maxLimit) {
+        LinearLayout layoutAdd = findViewById(R.id.layout_add_milk);
+        LinearLayout layoutCounter = findViewById(R.id.layout_counter_milk);
+        LinearLayout btnAddClickArea = findViewById(R.id.layout_add_milk);
+        TextView tvCount = findViewById(R.id.tv_count_milk);
+        ImageButton plus = findViewById(R.id.btn_plus_milk);
+        ImageButton minus = findViewById(R.id.btn_minus_milk);
+
+        btnAddClickArea.setOnClickListener(v -> {
+            layoutAdd.setVisibility(View.GONE);
+            layoutCounter.setVisibility(View.VISIBLE);
+            updateMilkQuantity(1, layoutAdd, layoutCounter, tvCount);
+        });
+
+        plus.setOnClickListener(v -> {
+            if (milkQuantity < maxLimit) {
+                updateMilkQuantity(milkQuantity + 1, layoutAdd, layoutCounter, tvCount);
+            } else {
+                Toast.makeText(this, "Max Limit Reached", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // --------------------------
-        // ViewPager + Dots
-        // --------------------------
+        minus.setOnClickListener(v -> {
+            if (milkQuantity > 0) {
+                updateMilkQuantity(milkQuantity - 1, layoutAdd, layoutCounter, tvCount);
+            }
+        });
+    }
+
+    private void updateMilkQuantity(int newQuantity, View layoutAdd, View layoutCounter, TextView tvCount) {
+        float startProgress = lottieMilk.getProgress();
+        float endProgress = (newQuantity > 0) ? 1f : 0f;
+        boolean isAdding = newQuantity > milkQuantity;
+
+        milkQuantity = newQuantity;
+        tvCount.setText(String.valueOf(milkQuantity));
+
+        if (milkQuantity == 0) {
+            layoutCounter.setVisibility(View.GONE);
+            layoutAdd.setVisibility(View.VISIBLE);
+        }
+
+        // Pass lottieMilk here
+        animateProduct(lottieMilk, startProgress, endProgress, isAdding);
+    }
+
+    // -----------------------------------------
+    // CURD CARD LOGIC
+    // -----------------------------------------
+    private void setupCurdQuickCard(int maxCurd) {
+        LinearLayout layoutAdd = findViewById(R.id.layout_add_curd);
+        LinearLayout layoutCounter = findViewById(R.id.layout_counter_curd);
+        LinearLayout btnAddClick = findViewById(R.id.layout_add_curd);
+        TextView tvCount = findViewById(R.id.tv_count_curd);
+        ImageButton plus = findViewById(R.id.btn_plus_curd);
+        ImageButton minus = findViewById(R.id.btn_minus_curd);
+
+        btnAddClick.setOnClickListener(v -> {
+            layoutAdd.setVisibility(View.GONE);
+            layoutCounter.setVisibility(View.VISIBLE);
+            updateCurdQuantity(1, layoutAdd, layoutCounter, tvCount);
+        });
+
+        plus.setOnClickListener(v -> {
+            if (curdQuantity < maxCurd) {
+                updateCurdQuantity(curdQuantity + 1, layoutAdd, layoutCounter, tvCount);
+            }
+        });
+
+        minus.setOnClickListener(v -> {
+            if (curdQuantity > 0) {
+                updateCurdQuantity(curdQuantity - 1, layoutAdd, layoutCounter, tvCount);
+            }
+        });
+    }
+
+    private void updateCurdQuantity(int newQuantity, View layoutAdd, View layoutCounter, TextView tvCount) {
+        float startProgress = lottieCurd.getProgress();
+        float endProgress = (newQuantity > 0) ? 1f : 0f;
+        boolean isAdding = newQuantity > curdQuantity;
+
+        curdQuantity = newQuantity;
+        tvCount.setText(String.valueOf(curdQuantity));
+
+        if (curdQuantity == 0) {
+            layoutCounter.setVisibility(View.GONE);
+            layoutAdd.setVisibility(View.VISIBLE);
+        }
+
+        // Pass lottieCurd here
+        animateProduct(lottieCurd, startProgress, endProgress, isAdding);
+    }
+
+    // -----------------------------------------
+    // CUSTOM CARD LOGIC (Basic)
+    // -----------------------------------------
+    private void setupCustomQuickCard(int maxCustom) {
+        LinearLayout layoutAdd = findViewById(R.id.layout_add_custom);
+        LinearLayout layoutCounter = findViewById(R.id.layout_counter_custom);
+        LinearLayout btnAdd = findViewById(R.id.layout_add_custom);
+        TextView tvCount = findViewById(R.id.tv_count_custom);
+        ImageButton plus = findViewById(R.id.btn_plus_custom);
+        ImageButton minus = findViewById(R.id.btn_minus_custom);
+        final int[] count = {0};
+
+        btnAdd.setOnClickListener(v -> {
+            layoutAdd.setVisibility(View.GONE);
+            layoutCounter.setVisibility(View.VISIBLE);
+            count[0] = 1;
+            tvCount.setText("1");
+        });
+
+        plus.setOnClickListener(v -> {
+            if (count[0] < maxCustom) {
+                count[0]++;
+                tvCount.setText(String.valueOf(count[0]));
+            }
+        });
+
+        minus.setOnClickListener(v -> {
+            count[0]--;
+            if (count[0] <= 0) {
+                layoutCounter.setVisibility(View.GONE);
+                layoutAdd.setVisibility(View.VISIBLE);
+                count[0] = 0;
+            } else {
+                tvCount.setText(String.valueOf(count[0]));
+            }
+        });
+    }
+
+    // -----------------------------------------
+    // Helpers
+    // -----------------------------------------
+    private void setupBottomNav() {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) return true;
+            else if (id == R.id.nav_map) {
+                startActivity(new Intent(getApplicationContext(), VendorActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void setupSlider() {
         ViewPager2 viewPager = findViewById(R.id.viewpager_card);
         LinearLayout dotsContainer = findViewById(R.id.dots_container);
 
@@ -118,143 +329,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 updateDots(position, dotsContainer);
-            }
-        });
-
-        // Setup 3 Independent Cards
-        setupMilkQuickCard(maxMilk);
-        setupCurdQuickCard(maxCurd);
-        setupCustomQuickCard(maxCustom);
-    }
-
-    // -----------------------------------------
-    // MILK QUICK CARD
-    // -----------------------------------------
-    private void setupMilkQuickCard(int maxMilk) {
-
-        LinearLayout layoutAdd = findViewById(R.id.layout_add_milk);
-        LinearLayout layoutCounter = findViewById(R.id.layout_counter_milk);
-
-        TextView btnAdd = findViewById(R.id.btn_add_milk);
-        TextView tvCount = findViewById(R.id.tv_count_milk);
-
-        ImageButton plus = findViewById(R.id.btn_plus_milk);
-        ImageButton minus = findViewById(R.id.btn_minus_milk);
-
-        final int[] count = {0};
-
-        btnAdd.setOnClickListener(v -> {
-            layoutAdd.setVisibility(View.GONE);
-            layoutCounter.setVisibility(View.VISIBLE);
-            count[0] = 1;
-            tvCount.setText("1");
-        });
-
-        plus.setOnClickListener(v -> {
-            if (count[0] < maxMilk) {
-                count[0]++;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                Toast.makeText(this, "Max Milk Limit: " + maxMilk, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        minus.setOnClickListener(v -> {
-            if (count[0] > 1) {
-                count[0]--;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                layoutCounter.setVisibility(View.GONE);
-                layoutAdd.setVisibility(View.VISIBLE);
-                count[0] = 0;
-            }
-        });
-    }
-
-    // -----------------------------------------
-    // CURD QUICK CARD
-    // -----------------------------------------
-    private void setupCurdQuickCard(int maxCurd) {
-
-        LinearLayout layoutAdd = findViewById(R.id.layout_add_curd);
-        LinearLayout layoutCounter = findViewById(R.id.layout_counter_curd);
-
-        TextView btnAdd = findViewById(R.id.btn_add_curd);
-        TextView tvCount = findViewById(R.id.tv_count_curd);
-
-        ImageButton plus = findViewById(R.id.btn_plus_curd);
-        ImageButton minus = findViewById(R.id.btn_minus_curd);
-
-        final int[] count = {0};
-
-        btnAdd.setOnClickListener(v -> {
-            layoutAdd.setVisibility(View.GONE);
-            layoutCounter.setVisibility(View.VISIBLE);
-            count[0] = 1;
-            tvCount.setText("1");
-        });
-
-        plus.setOnClickListener(v -> {
-            if (count[0] < maxCurd) {
-                count[0]++;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                Toast.makeText(this, "Max Curd Limit: " + maxCurd, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        minus.setOnClickListener(v -> {
-            if (count[0] > 1) {
-                count[0]--;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                layoutCounter.setVisibility(View.GONE);
-                layoutAdd.setVisibility(View.VISIBLE);
-                count[0] = 0;
-            }
-        });
-    }
-
-    // -----------------------------------------
-    // CUSTOM QUICK CARD
-    // -----------------------------------------
-    private void setupCustomQuickCard(int maxCustom) {
-
-        LinearLayout layoutAdd = findViewById(R.id.layout_add_custom);
-        LinearLayout layoutCounter = findViewById(R.id.layout_counter_custom);
-
-        TextView btnAdd = findViewById(R.id.btn_add_custom);
-        TextView tvCount = findViewById(R.id.tv_count_custom);
-
-        ImageButton plus = findViewById(R.id.btn_plus_custom);
-        ImageButton minus = findViewById(R.id.btn_minus_custom);
-
-        final int[] count = {0};
-
-        btnAdd.setOnClickListener(v -> {
-            layoutAdd.setVisibility(View.GONE);
-            layoutCounter.setVisibility(View.VISIBLE);
-            count[0] = 1;
-            tvCount.setText("1");
-        });
-
-        plus.setOnClickListener(v -> {
-            if (count[0] < maxCustom) {
-                count[0]++;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                Toast.makeText(this, "Max Custom Limit: " + maxCustom, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        minus.setOnClickListener(v -> {
-            if (count[0] > 1) {
-                count[0]--;
-                tvCount.setText(String.valueOf(count[0]));
-            } else {
-                layoutCounter.setVisibility(View.GONE);
-                layoutAdd.setVisibility(View.VISIBLE);
-                count[0] = 0;
             }
         });
     }
