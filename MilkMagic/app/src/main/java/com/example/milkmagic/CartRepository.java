@@ -3,17 +3,25 @@ package com.example.milkmagic;
 import java.util.ArrayList;
 
 public class CartRepository {
-    // Keeps the list of items alive as long as the app is running
     private static final ArrayList<CartModel> cartItems = new ArrayList<>();
 
+    // This flag ensures we only load demo data ONCE per app launch
+    public static boolean isDemoLoaded = false;
+
     public static void addItem(CartModel item) {
-        // Prevent adding the same item twice (just for safety)
+        boolean exists = false;
         for (CartModel existing : cartItems) {
+            // Using Name as ID. logic
             if (existing.getName().equals(item.getName())) {
-                return;
+                // If item exists, just add quantity
+                existing.setQuantity(existing.getQuantity() + item.getQuantity());
+                exists = true;
+                break;
             }
         }
-        cartItems.add(item);
+        if (!exists) {
+            cartItems.add(item);
+        }
     }
 
     public static ArrayList<CartModel> getCartItems() {

@@ -47,7 +47,33 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.VendorView
 
         // 3. Handle Order Button Click
         holder.btnOrder.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Ordered from " + vendor.getVendorName(), Toast.LENGTH_SHORT).show();
+            // --- ADDED CART LOGIC START ---
+            int priceInt = 50; // Default fallback
+            try {
+                String rawPrice = vendor.getPrice();
+                // Remove everything that is NOT a digit to get pure number
+                String cleanPrice = rawPrice.replaceAll("[^0-9]", "");
+                if (!cleanPrice.isEmpty()) {
+                    priceInt = Integer.parseInt(cleanPrice);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Create the item
+            CartModel newItem = new CartModel(
+                    vendor.getVendorName(),
+                    "1 Litre",
+                    priceInt,
+                    1,
+                    R.drawable.ic_milk
+            );
+
+            // Add to your Cart Repository
+            CartRepository.addItem(newItem);
+            // --- ADDED CART LOGIC END ---
+
+            Toast.makeText(v.getContext(), "Added " + vendor.getVendorName() + " to Cart", Toast.LENGTH_SHORT).show();
         });
 
         // 4. APPLY BLUR EFFECT (Android 12 / API 31+ only)
@@ -57,13 +83,15 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.VendorView
                 // We apply the blur to the overlay view (the gradient)
                 // Note: Standard Android APIs cannot easily blur the *background image* behind a view
                 // without external libraries. This blurs the gradient itself to make it softer.
-                holder.glassOverlay.setRenderEffect(
-                        RenderEffect.createBlurEffect(
-                                30f, // Blur Radius X
-                                30f, // Blur Radius Y
-                                Shader.TileMode.MIRROR
-                        )
-                );
+                if (holder.glassOverlay != null) {
+                    holder.glassOverlay.setRenderEffect(
+                            RenderEffect.createBlurEffect(
+                                    30f, // Blur Radius X
+                                    30f, // Blur Radius Y
+                                    Shader.TileMode.MIRROR
+                            )
+                    );
+                }
             } catch (Exception e) {
                 e.printStackTrace(); // Handle crash on some specific devices
             }

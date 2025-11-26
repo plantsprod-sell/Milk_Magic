@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="btn_blue_bg">#1976D2</color>
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#6200EE</color>
     <color name="purple_700">#3700B3</color>
@@ -14,9 +12,7 @@
     <color name="text_secondary">#757575</color>
     <color name="background_gray">#F9F9F9</color>
 
-    <color name="blue_gradient_start">#81D4FA</color>
-    <color name="blue_gradient_end">#29B6F6</color>
-    <color name="bg_light_blue">#E1F5FE</color>
+    <color name="blue_gradient_start">#81D4FA</color> <color name="blue_gradient_end">#29B6F6</color>   <color name="bg_light_blue">#E1F5FE</color>
     <color name="bg_light_green">#E8F5E9</color>
     <color name="bg_light_orange">#FFF3E0</color>
 
@@ -42,6 +38,7 @@
     <color name="search_light_fill">#FFFFFF</color>
     <color name="search_stroke">#E0E0E0</color>
 
+    <color name="btn_blue_bg">#29B6F6</color>
     <color name="btn_text_white">#FFFFFF</color>
 
     <color name="app_background">#F8F9FA</color>
