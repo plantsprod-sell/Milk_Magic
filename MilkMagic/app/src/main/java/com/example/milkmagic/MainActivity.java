@@ -43,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private LottieAnimationView lottieCurd;
     private int milkQuantity = 0;
     private int curdQuantity = 0;
+    private androidx.cardview.widget.CardView cardViewCart;
+    private TextView tvCartCount, tvCartPrice;
 
+    // PRICES (Example prices)
+    private  int priceMilk = 0;
+    private  int priceCurd = 0;
     // --------------------------
     // JSON Reader
     // --------------------------
@@ -105,14 +110,29 @@ public class MainActivity extends AppCompatActivity {
 
         lottieMilk.setProgress(0f);
         lottieCurd.setProgress(0f);
+        // INIT CART BAR
+        cardViewCart = findViewById(R.id.card_view_cart);
+        tvCartCount = findViewById(R.id.tv_cart_count);
+        tvCartPrice = findViewById(R.id.tv_cart_price);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // 2. Read Limits
         JSONObject limits = getJsonLimits();
+        JSONObject jsonRoot = getJsonLimits();
+
         int maxMilk   = (limits != null) ? limits.optInt("milk", 10) : 10;
         int maxCurd   = (limits != null) ? limits.optInt("curd", 10) : 10;
         int maxCustom = (limits != null) ? limits.optInt("custom", 5) : 5;
+
+        // B. Read Prices (NEW LOGIC)
+        if (jsonRoot != null) {
+            JSONObject priceBlock = jsonRoot.optJSONObject("prices");
+            if (priceBlock != null) {
+                priceMilk = priceBlock.optInt("milk", 40); // Default 40 if missing
+                priceCurd = priceBlock.optInt("curd", 30); // Default 30 if missing
+            }
+        }
 
         // 3. Setup Bottom Nav
         setupBottomNav();
@@ -226,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Pass lottieMilk here
         animateProduct(lottieMilk, startProgress, endProgress, isAdding);
+        updateCartBar();
     }
 
     // -----------------------------------------
@@ -276,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Pass lottieCurd here
         animateProduct(lottieCurd, startProgress, endProgress, isAdding);
+        updateCartBar();
     }
 
     // -----------------------------------------
@@ -316,6 +338,33 @@ public class MainActivity extends AppCompatActivity {
                 tvCount.setText(String.valueOf(count[0]));
             }
         });
+    }
+
+
+    private void updateCartBar() {
+        int totalItems = milkQuantity + curdQuantity;
+       // int totalPrice = (milkQuantity * PRICE_MILK) + (curdQuantity * PRICE_CURD);
+        int totalPrice = (milkQuantity * priceMilk) + (curdQuantity * priceCurd);
+
+        if (totalItems > 0) {
+            // Show Bar
+            if (cardViewCart.getVisibility() == View.GONE) {
+                cardViewCart.setVisibility(View.VISIBLE);
+                // Optional: Simple Slide Up Animation
+                cardViewCart.setAlpha(0f);
+                cardViewCart.setTranslationY(100f);
+                cardViewCart.animate().alpha(1f).translationY(0f).setDuration(300).start();
+            }
+
+            // Update Text
+            String itemText = (totalItems == 1) ? " Item" : " Items";
+            tvCartCount.setText(totalItems + itemText);
+            tvCartPrice.setText("₹" + totalPrice);
+
+        } else {
+            // Hide Bar
+            cardViewCart.setVisibility(View.GONE);
+        }
     }
 
     // -----------------------------------------
