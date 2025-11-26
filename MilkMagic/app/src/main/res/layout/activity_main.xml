@@ -185,6 +185,7 @@
                             android:layout_height="32dp"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/bg_counter_rounded"
+                            android:backgroundTint="#1976D2"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:visibility="gone">
@@ -274,6 +275,7 @@
                             android:layout_height="32dp"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/bg_counter_rounded"
+                            android:backgroundTint="#1976D2"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:visibility="gone">

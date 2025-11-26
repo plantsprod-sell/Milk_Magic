@@ -29,6 +29,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.content.Context;
+import android.os.Build;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +58,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    private void vibratePhone() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (v != null) {
+            // Vibrate for 50 milliseconds
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                v.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                // Deprecated in API 26
+                v.vibrate(50);
+            }
         }
     }
 
@@ -172,12 +188,14 @@ public class MainActivity extends AppCompatActivity {
         ImageButton minus = findViewById(R.id.btn_minus_milk);
 
         btnAddClickArea.setOnClickListener(v -> {
+            vibratePhone();
             layoutAdd.setVisibility(View.GONE);
             layoutCounter.setVisibility(View.VISIBLE);
             updateMilkQuantity(1, layoutAdd, layoutCounter, tvCount);
         });
 
         plus.setOnClickListener(v -> {
+            vibratePhone();
             if (milkQuantity < maxLimit) {
                 updateMilkQuantity(milkQuantity + 1, layoutAdd, layoutCounter, tvCount);
             } else {
@@ -186,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         minus.setOnClickListener(v -> {
+            vibratePhone();
             if (milkQuantity > 0) {
                 updateMilkQuantity(milkQuantity - 1, layoutAdd, layoutCounter, tvCount);
             }
@@ -221,18 +240,21 @@ public class MainActivity extends AppCompatActivity {
         ImageButton minus = findViewById(R.id.btn_minus_curd);
 
         btnAddClick.setOnClickListener(v -> {
+            vibratePhone();
             layoutAdd.setVisibility(View.GONE);
             layoutCounter.setVisibility(View.VISIBLE);
             updateCurdQuantity(1, layoutAdd, layoutCounter, tvCount);
         });
 
         plus.setOnClickListener(v -> {
+            vibratePhone();
             if (curdQuantity < maxCurd) {
                 updateCurdQuantity(curdQuantity + 1, layoutAdd, layoutCounter, tvCount);
             }
         });
 
         minus.setOnClickListener(v -> {
+            vibratePhone();
             if (curdQuantity > 0) {
                 updateCurdQuantity(curdQuantity - 1, layoutAdd, layoutCounter, tvCount);
             }
@@ -276,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         plus.setOnClickListener(v -> {
+            vibratePhone();
             if (count[0] < maxCustom) {
                 count[0]++;
                 tvCount.setText(String.valueOf(count[0]));
@@ -283,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         minus.setOnClickListener(v -> {
+            vibratePhone();
             count[0]--;
             if (count[0] <= 0) {
                 layoutCounter.setVisibility(View.GONE);
