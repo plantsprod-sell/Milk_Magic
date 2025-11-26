@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Set Status Bar to White and Icons to Dark
-        //getWindow().setStatusBarColor(getResources().getColor(R.color.light_bg));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -36,15 +36,18 @@ public class MainActivity extends AppCompatActivity {
                     // Current Screen - do nothing
                     return true;
                 } else if (id == R.id.nav_map) {
-                    // Logic to open Map/Vendor Activity
-                    Toast.makeText(MainActivity.this, "Opening Vendor Map...", Toast.LENGTH_SHORT).show();
-                    // Intent intent = new Intent(MainActivity.this, VendorActivity.class);
-                    // startActivity(intent);
+                    Toast.makeText(MainActivity.this, "Opening Vendors...", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), VendorActivity.class));
                     overridePendingTransition(0,0);
                     return true;
+
+                } else if (id == R.id.nav_cart) {
+                    // --- NEW CART LOGIC ---
+                    startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                    overridePendingTransition(0,0);
+                    return true;
+
                 } else if (id == R.id.nav_profile) {
-                    // Logic to open Profile Activity
                     Toast.makeText(MainActivity.this, "Opening Profile...", Toast.LENGTH_SHORT).show();
                     return true;
                 }

@@ -3,6 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="upi" />
+        </intent>
+    </queries>
+
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
@@ -13,6 +23,7 @@
         android:roundIcon="@android:drawable/btn_star_big_on"
         android:supportsRtl="true"
         android:theme="@style/Theme.MilkMagic">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,11 +31,14 @@
             android:theme="@style/Theme.MilkMagic">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".VendorActivity" android:exported="false" />
+
+        <activity android:name=".CartActivity" android:exported="false" />
+
     </application>
 
 </manifest>

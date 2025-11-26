@@ -13,4 +13,5 @@
     <color name="glass_center">#99081B25</color>
     <color name="glass_top">#00081B25</color>
     <color name="vendor_name_text">#FFFFFF</color>
-</resources>
+
+    <color name="btn_blue_bg">#1976D2</color> <color name="white">#FFFFFF</color>       <color name="black">#000000</color>       <color name="text_primary">#FFFFFF</color> </resources>
