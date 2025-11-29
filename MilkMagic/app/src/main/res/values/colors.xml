@@ -48,9 +48,19 @@
     <color name="btn_bg">#29B6F6</color>
     <color name="btn_text">#FFFFFF</color>
 
-    <color name="glass_bottom">#F2FFFFFF</color>
+    <color name="glass_bottom1">#F2FFFFFF</color>
     <color name="glass_center">#B3FFFFFF</color>
-    <color name="glass_top">#00FFFFFF</color>
+    <color name="glass_top1">#00FFFFFF</color>
     <color name="vendor_name_text">#212121</color>
     <color name="price_text">#00838F</color>
+
+    <color name="glass_bottom">#D9FFFFFF</color>
+
+    <color name="glass_top">#80FFFFFF</color>
+
+    <color name="text_glass_primary">#1A1A1A</color>
+    <color name="text_glass_teal">#00838F</color>
+
+    <color name="card_bg">#29B6F6</color>
+    <color name="vendor_background">#E9F4FF</color>
 </resources>

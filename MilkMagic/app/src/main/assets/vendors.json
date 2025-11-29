@@ -2,7 +2,10 @@
   {
     "vendorName": "Amul",
     "price": "₹60/L",
+    "rating": "4.9",
     "imageUrls": [
+      "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=1080&q=90",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1080&q=90",
       "https://images.unsplash.com/photo-1546445317-29f4545e9d53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     ]
@@ -10,7 +13,11 @@
   {
     "vendorName": "Mother Dairy",
     "price": "₹58/L",
+    "rating": "2",
     "imageUrls": [
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1080&q=90",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1080&q=90",
+      "https://images.unsplash.com/photos/a-bottle-of-milk-a-glass-of-milk-a-loaf-of-bread-and-j207CVAJDRk",
       "https://images.unsplash.com/photo-1500595046743-cd271d694d30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1596733430282-d8713028222f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     ]
@@ -18,6 +25,7 @@
   {
     "vendorName": "Gopal Dairy",
     "price": "₹65/L",
+    "rating": "3",
     "imageUrls": [
       "https://images.unsplash.com/photo-1528498033381-a9b73d521c2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1559563362-c667ba5f5480?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
@@ -26,6 +34,7 @@
   {
     "vendorName": "Nandini Milk",
     "price": "₹52/L",
+    "rating": "4.4",
     "imageUrls": [
       "https://images.unsplash.com/photo-1629193708301-209667796911?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     ]
@@ -33,9 +42,24 @@
   {
     "vendorName": "Heritage Fresh",
     "price": "₹62/L",
+    "rating": "4.4",
     "imageUrls": [
+      "https://unsplash.com/photos/a-bottle-of-milk-and-some-cookies-on-a-table-eU2s_fonJkg",
       "https://images.unsplash.com/photo-1596450524472-747d253f932e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1546445317-29f4545e9d53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  {
+    "vendorName": "Anand breast Milk",
+    "price": "₹5055/L",
+    "rating": "4.8",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1603134041110-c78932524119?q=90&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=1080&q=90",
+      "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=600&q=80",
+      "https://picsum.photos/seed/two/600/400",
+      "https://picsum.photos/seed/three/600/400",
+      "https://unsplash.com/photos/white-ceramic-mug-on-brown-wooden-table-MMuOz3UNKeo"
     ]
   }
 ]

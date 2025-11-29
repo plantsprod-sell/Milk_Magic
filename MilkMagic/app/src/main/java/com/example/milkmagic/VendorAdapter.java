@@ -39,8 +39,9 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.VendorView
         // 1. Set Text Data
         holder.tvVendorName.setText(vendor.getVendorName());
         holder.tvPrice.setText(vendor.getPrice());
+        holder.tvRating.setText(vendor.getRating());
 
-        // 2. Setup Image Slider (Carousel)
+        // 2. Setup Image Slider
         ImageSliderAdapter sliderAdapter = new ImageSliderAdapter(vendor.getImageList());
         holder.vpVendorImages.setAdapter(sliderAdapter);
         holder.indicator.setViewPager(holder.vpVendorImages);
@@ -50,22 +51,17 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.VendorView
             Toast.makeText(v.getContext(), "Ordered from " + vendor.getVendorName(), Toast.LENGTH_SHORT).show();
         });
 
-        // 4. APPLY BLUR EFFECT (Android 12 / API 31+ only)
-        // This smooths the gradient overlay to look more like glass
+        // 4. GLASS BLUR EFFECT (Android 12 / API 31+)
+        // We access 'holder.glassOverlay' which we defined in the class below
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            try {
-                // We apply the blur to the overlay view (the gradient)
-                // Note: Standard Android APIs cannot easily blur the *background image* behind a view
-                // without external libraries. This blurs the gradient itself to make it softer.
+            if (holder.glassOverlay != null) {
                 holder.glassOverlay.setRenderEffect(
                         RenderEffect.createBlurEffect(
-                                30f, // Blur Radius X
-                                30f, // Blur Radius Y
+                                50f, // Horizontal Blur
+                                50f, // Vertical Blur
                                 Shader.TileMode.MIRROR
                         )
                 );
-            } catch (Exception e) {
-                e.printStackTrace(); // Handle crash on some specific devices
             }
         }
     }
@@ -75,22 +71,27 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.VendorView
         return vendorList.size();
     }
 
-    // --- ViewHolder Class ---
+    // ==========================================
+    // VIEW HOLDER CLASS (The fix is here)
+    // ==========================================
     static class VendorViewHolder extends RecyclerView.ViewHolder {
-        TextView tvVendorName, tvPrice, btnOrder;
+        TextView tvVendorName, tvPrice, tvRating, btnOrder;
         ViewPager2 vpVendorImages;
         CircleIndicator3 indicator;
-        View glassOverlay; // Reference to the gradient view
+
+        // We define the Glass View here so 'holder' can find it
+        View glassOverlay;
 
         public VendorViewHolder(@NonNull View itemView) {
             super(itemView);
             tvVendorName = itemView.findViewById(R.id.tv_vendor_name);
             tvPrice = itemView.findViewById(R.id.tv_price);
+            tvRating = itemView.findViewById(R.id.tv_rating);
             btnOrder = itemView.findViewById(R.id.btn_order);
             vpVendorImages = itemView.findViewById(R.id.vp_vendor_images);
             indicator = itemView.findViewById(R.id.indicator_dots);
 
-            // Make sure your XML has this ID: android:id="@+id/view_glass_overlay"
+            // LINK TO XML ID
             glassOverlay = itemView.findViewById(R.id.view_glass_overlay);
         }
     }

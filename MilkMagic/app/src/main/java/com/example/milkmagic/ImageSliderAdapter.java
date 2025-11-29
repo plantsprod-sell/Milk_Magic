@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView; // Import Lottie
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
@@ -40,6 +44,11 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
 
         Glide.with(holder.itemView.getContext())
                 .load(imageList.get(position).getImageUrl())
+                .apply(new RequestOptions()
+                        .format(DecodeFormat.PREFER_ARGB_8888) // 1. FORCE 32-BIT COLOR (Best Quality)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // 2. Cache the High Res image
+                        .override(1080, 800)) // 3. Optimize size for CardView
+                .transition(DrawableTransitionOptions.withCrossFade()) // 4. Smooth Fade In
                 // --- TEST CODE START: Disable Cache to see animation every time ---
                 .skipMemoryCache(true)
                 .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)

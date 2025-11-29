@@ -8,12 +8,13 @@
         android:id="@+id/slider_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_card_blue"
         android:scaleType="centerCrop" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_loader"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         app:lottie_rawRes="@raw/cow_loading"
