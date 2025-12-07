@@ -25,6 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".VendorActivity" android:exported="false" />
+        <activity android:name=".VendorDetailActivity" android:exported="false" />
+        <activity android:name=".FullScreenImageActivity" />
     </application>
 
 </manifest>

@@ -63,4 +63,5 @@
 
     <color name="card_bg">#29B6F6</color>
     <color name="vendor_background">#E9F4FF</color>
+    <color name="sheet_bg_blue">#F0F7FF</color>
 </resources>

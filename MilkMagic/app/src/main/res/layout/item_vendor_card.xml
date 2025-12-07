@@ -11,12 +11,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_vendor_images"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
 
         <View
             android:id="@+id/view_glass_overlay"
@@ -76,12 +79,12 @@
 
             android:background="@drawable/bg_btn_blue"
 
-            android:text="Order"
+            android:text="View"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
             android:textAllCaps="true"
-            android:letterSpacing="0.05"
+            android:letterSpacing="0.07"
 
             android:paddingHorizontal="32dp"
             android:paddingVertical="10dp"

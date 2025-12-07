@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000"> <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/vp_full_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_arrow_back_24"
+        android:padding="12dp"
+        android:background="@drawable/bg_white_fade"
+        android:backgroundTint="#80000000"
+        app:tint="#FFFFFF"/>
+</FrameLayout>

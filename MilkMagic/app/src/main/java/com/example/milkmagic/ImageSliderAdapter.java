@@ -1,5 +1,6 @@
 package com.example.milkmagic;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +10,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView; // Import Lottie
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
 public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.SliderViewHolder> {
     private List<ImageSliderModel> imageList;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public ImageSliderAdapter(List<ImageSliderModel> imageList) {
         this.imageList = imageList;
@@ -37,40 +43,47 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
-        // 1. Show Animation initially
+    public void onBindViewHolder(@NonNull SliderViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        // 1. FORCE ANIMATION START: Make sure it's visible before image loads
         holder.lottieLoader.setVisibility(View.VISIBLE);
         holder.lottieLoader.playAnimation();
 
+        // 2. Clear the previous image (prevents flickering old images)
+        holder.sliderImage.setImageDrawable(null);
+
+        // 3. Load Image
         Glide.with(holder.itemView.getContext())
                 .load(imageList.get(position).getImageUrl())
-                .apply(new RequestOptions()
-                        .format(DecodeFormat.PREFER_ARGB_8888) // 1. FORCE 32-BIT COLOR (Best Quality)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL) // 2. Cache the High Res image
-                        .override(1080, 800)) // 3. Optimize size for CardView
-                .transition(DrawableTransitionOptions.withCrossFade()) // 4. Smooth Fade In
-                // --- TEST CODE START: Disable Cache to see animation every time ---
+                // --- DEBUG: Disable cache to see animation every time (Remove for production) ---
                 .skipMemoryCache(true)
                 .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
-                // --- TEST CODE END ---
+                // -------------------------------------------------------------------------------
+                .centerCrop()
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        // Optional: Keep animation or show error icon
+                        // Hide animation on failure
+                        holder.lottieLoader.cancelAnimation();
                         holder.lottieLoader.setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        // 2. Image Loaded! Hide the Cow Animation
-                        holder.lottieLoader.setVisibility(View.GONE);
+                        // SUCCESS: Hide animation
                         holder.lottieLoader.cancelAnimation();
+                        holder.lottieLoader.setVisibility(View.GONE);
                         return false;
                     }
                 })
-                .centerCrop()
                 .into(holder.sliderImage);
+
+        // 4. Handle Click
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -80,12 +93,11 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
 
     static class SliderViewHolder extends RecyclerView.ViewHolder {
         ImageView sliderImage;
-        LottieAnimationView lottieLoader; // Define Lottie View
+        LottieAnimationView lottieLoader;
 
         public SliderViewHolder(@NonNull View itemView) {
             super(itemView);
             sliderImage = itemView.findViewById(R.id.slider_image);
-            // Link to XML ID
             lottieLoader = itemView.findViewById(R.id.lottie_loader);
         }
     }
